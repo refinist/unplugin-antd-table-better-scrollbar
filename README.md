@@ -108,7 +108,7 @@ pnpm exec vp test run
 
 ## 发布到 npm
 
-向 main 推送代码或提交 PR 时，工作流通过 Vite+ 在 Linux 和 Windows 上运行检查、构建与 Chromium 回归测试。Linux 测试生成 LCOV 报告，两端测试通过后上传至 Codecov。
+向 main 推送代码或提交 PR 时，工作流通过 Vite+ 在 Linux 和 Windows 上运行检查、构建与 Chromium 回归测试。两端测试通过后，独立的覆盖率任务在 Linux 上生成 LCOV 报告并直接上传至 Codecov。
 
 发布前，在根目录 package.json 填写实际 GitHub 仓库的 `repository.url` 并更新版本号。将改动合入 main 并确认测试通过后，推送对应的版本标签（例如 `v1.2.3`）。release 工作流通过 `vp pack` 构建并发布 npm 包，再创建带自动发布说明的 GitHub Release。
 
