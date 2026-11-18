@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "description": "Build plugin for Ant Design Vue and React table scrollbar alignment",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/refinist/unplugin-antd-table-better-scrollbar.git"
+  },
   "files": [
     "dist",
     "styles"
@@ -49,6 +53,7 @@
     "antdv3": "npm:ant-design-vue@3.2.20",
     "antdv4": "npm:ant-design-vue@4.2.6",
     "antdv40": "npm:ant-design-vue@4.0.0",
+    "changelogithub": "15.0.5",
     "esbuild": "^0.27.0",
     "react": "19.3.1",
     "react-dom": "19.3.1",
