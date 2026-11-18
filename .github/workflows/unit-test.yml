@@ -24,16 +24,7 @@ jobs:
           cache: true
       - run: vp check
       - run: vp exec playwright install --with-deps chromium
-      - if: runner.os == 'Windows'
-        run: vp test run
-      - if: runner.os == 'Linux'
-        run: vp test run --coverage --coverage.reporter=lcov
-      - if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: coverage/lcov.info
-          if-no-files-found: error
+      - run: vp test run
 
   coverage:
     needs: unit-test
@@ -43,10 +34,11 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/download-artifact@v4
+      - uses: voidzero-dev/setup-vp@v1
         with:
-          name: coverage
-          path: coverage
+          cache: true
+      - run: vp exec playwright install --with-deps chromium
+      - run: vp test run --coverage --coverage.reporter=lcov
       - uses: codecov/codecov-action@v5
         with:
           use_oidc: true
