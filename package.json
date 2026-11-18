@@ -1,0 +1,72 @@
+{
+  "name": "unplugin-antd-table-better-scrollbar",
+  "version": "0.0.0",
+  "description": "Build plugin for Ant Design Vue and React table scrollbar alignment",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "styles"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./vite": "./dist/vite.js",
+    "./webpack": "./dist/webpack.js",
+    "./rspack": "./dist/rspack.js",
+    "./vue/vite": "./dist/vite.js",
+    "./react/header.css": "./styles/react.css",
+    "./react/vite": "./dist/react/vite.js",
+    "./vue/webpack": "./dist/webpack.js",
+    "./react/webpack": "./dist/react/webpack.js",
+    "./vue/rspack": "./dist/rspack.js",
+    "./react/rspack": "./dist/react/rspack.js"
+  },
+  "scripts": {
+    "prepare": "vp config --hooks --no-agent",
+    "dev": "vp run --concurrency-limit 8 -F \"playground-*\" dev",
+    "build": "vp pack",
+    "test": "vp test run",
+    "check": "vp check",
+    "build:site": "node playground/build-site.ts",
+    "deploy:site": "pnpm run build:site && wrangler pages deploy site-dist --project-name antbs --branch main"
+  },
+  "dependencies": {
+    "magic-string": "0.30.21",
+    "unplugin": "2.2.2"
+  },
+  "devDependencies": {
+    "@ant-design/cssinjs": "2.1.2",
+    "@ant-design/icons": "6.3.4",
+    "@ant-design/icons-vue": "7.0.1",
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^26",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitest/coverage-v8": "5.1.0",
+    "antd": "6.7.1",
+    "antdv3": "npm:ant-design-vue@3.2.20",
+    "antdv4": "npm:ant-design-vue@4.2.6",
+    "antdv40": "npm:ant-design-vue@4.0.0",
+    "esbuild": "^0.27.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "typescript": "~5.9.3",
+    "vite": "npm:@voidzero-dev/vite-plus-core@8.3.8000",
+    "vite-plus": "^1.7.0",
+    "vite7": "npm:vite@7.3.8",
+    "vite8": "npm:vite@8.3.8",
+    "vue": "^3.5.45",
+    "vue33": "npm:vue@3.3.13",
+    "wrangler": "4.164.0"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "26.13.1",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "pnpm@12.21.0"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "playground-vue-cli",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@vue/cli-service": "^5.0.9",
+    "esbuild-loader": "^4.5.0",
+    "unplugin-antd-table-better-scrollbar": "workspace:*",
+    "webpack": "^5.112.2"
+  }
+}

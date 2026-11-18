@@ -1,0 +1,9 @@
+{
+  "name": "playground-react-rsbuild",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@rsbuild/core": "2.3.3",
+    "unplugin-antd-table-better-scrollbar": "workspace:*"
+  }
+}

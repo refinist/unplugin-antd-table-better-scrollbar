@@ -1,0 +1,7 @@
+.antd-better-scrollbar-header
+  > table
+  > thead
+  > tr
+  > th:has(+ th:last-child[class*='-cell-scrollbar'])::before {
+  display: none;
+}

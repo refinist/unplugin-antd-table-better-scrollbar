@@ -1,0 +1,88 @@
+.custom-scroll .ant-table-body {
+  scrollbar-color: auto;
+}
+.custom-scroll ::-webkit-scrollbar {
+  height: var(--scrollbar-size);
+  width: var(--scrollbar-size);
+}
+.custom-scroll ::-webkit-scrollbar-track {
+  background-color: #f9f9f9;
+}
+.custom-scroll ::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  border-style: dashed;
+  border-color: transparent;
+  border-width: 2px;
+  background-color: rgba(124, 124, 124, 0.3);
+  background-clip: padding-box;
+}
+.custom-scroll ::-webkit-scrollbar-thumb:hover {
+  background: rgba(124, 124, 124, 1);
+}
+
+.resizable-pair[data-fixed-issues] .comparison-original {
+  border-color: #ff4d4f;
+}
+.resizable-pair[data-fixed-issues] .comparison-patched {
+  border-color: #52c41a;
+}
+.comparison-caption {
+  padding: 4px 2px 0;
+  min-height: 22px;
+}
+.comparison-caption .ant-typography {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  line-height: 18px;
+}
+.comparison-caption .anticon {
+  flex: none;
+}
+#original-note .ant-typography-danger {
+  color: #cf1322;
+}
+#patched-note .ant-typography-success {
+  color: #237804;
+}
+.resizable-pair .ant-table-body {
+  height: var(--body-height);
+}
+.resize-toolbar {
+  padding: 6px 0;
+  position: relative;
+  gap: 4px;
+}
+.resize-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  pointer-events: none;
+}
+.resize-action {
+  z-index: 1;
+}
+.resize-toolbar .ant-btn.ant-btn-icon-only .anticon {
+  font-size: 13px;
+  transform: none;
+}
+.resize-handle {
+  position: absolute;
+  inset: 0;
+  cursor: ns-resize;
+  touch-action: none;
+  user-select: none;
+  border-bottom: 3px solid #a8b5c2;
+}
+.resize-handle:focus-visible,
+.resize-handle:hover {
+  border-color: #1677ff;
+}
+
+.plugin-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}

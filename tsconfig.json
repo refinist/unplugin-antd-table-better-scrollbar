@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "paths": {
+      "demo-ui/*": ["./node_modules/antdv4/es/*"],
+      "original-table": ["./node_modules/antdv4/lib/table/index.d.ts"],
+      "table-under-test": ["./node_modules/antdv4/es/table/index.d.ts"],
+      "unplugin-antd-table-better-scrollbar/vite": ["./src/vite.ts"],
+      "unplugin-antd-table-better-scrollbar/webpack": ["./src/webpack.ts"],
+      "unplugin-antd-table-better-scrollbar/rspack": ["./src/rspack.ts"],
+      "unplugin-antd-table-better-scrollbar": ["./src/index.ts"],
+      "unplugin-antd-table-better-scrollbar/vue/vite": ["./src/vite.ts"],
+      "unplugin-antd-table-better-scrollbar/react/vite": ["./src/react/vite.ts"],
+      "unplugin-antd-table-better-scrollbar/vue/webpack": ["./src/webpack.ts"],
+      "unplugin-antd-table-better-scrollbar/react/webpack": ["./src/react/webpack.ts"],
+      "unplugin-antd-table-better-scrollbar/vue/rspack": ["./src/rspack.ts"],
+      "unplugin-antd-table-better-scrollbar/react/rspack": ["./src/react/rspack.ts"]
+    },
+    "allowImportingTsExtensions": true,
+    "jsx": "react-jsx"
+  },
+  "include": ["src", "tests", "playground", "*.config.ts"]
+}
