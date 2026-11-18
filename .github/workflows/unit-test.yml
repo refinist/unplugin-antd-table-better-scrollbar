@@ -9,6 +9,9 @@ on:
 permissions:
   contents: read
 
+env:
+  CHROME_CHANNEL: chrome
+
 jobs:
   unit-test:
     strategy:
@@ -23,7 +26,6 @@ jobs:
         with:
           cache: true
       - run: vp check
-      - run: vp exec playwright install --with-deps chromium
       - run: vp test run
 
   coverage:
@@ -37,7 +39,6 @@ jobs:
       - uses: voidzero-dev/setup-vp@v1
         with:
           cache: true
-      - run: vp exec playwright install --with-deps chromium
       - run: vp test run --coverage --coverage.reporter=lcov
       - uses: codecov/codecov-action@v5
         with:
