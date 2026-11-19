@@ -26,7 +26,17 @@ jobs:
         with:
           cache: true
       - run: vp check
-      - run: vp test run
+      - if: runner.os == 'Windows'
+        run: vp test run
+      - if: runner.os == 'Linux'
+        run: vp test run --coverage --coverage.reporter=lcov
+      - if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v7
+        with:
+          name: lcov-report
+          path: coverage/lcov.info
+          if-no-files-found: error
+          overwrite: true
 
   coverage:
     needs: unit-test
@@ -36,10 +46,10 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v6
-      - uses: voidzero-dev/setup-vp@v1
+      - uses: actions/download-artifact@v8
         with:
-          cache: true
-      - run: vp test run --coverage --coverage.reporter=lcov
+          name: lcov-report
+          path: coverage
       - uses: codecov/codecov-action@v5
         with:
           use_oidc: true
