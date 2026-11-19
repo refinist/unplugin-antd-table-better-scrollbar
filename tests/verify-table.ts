@@ -27,7 +27,7 @@ export async function verifyTable(url: string, framework: 'vue' | 'react' = 'vue
         { timeout: 5000 },
       );
     await page.goto(url);
-    await page.getByText('系统默认', { exact: true }).click();
+    assert.ok(await page.getByRole('radio', { name: '系统默认', exact: true }).isChecked());
     const widthInput = page.getByRole('spinbutton');
     assert.ok(await widthInput.isDisabled());
     await page.getByText('自定义', { exact: true }).click();

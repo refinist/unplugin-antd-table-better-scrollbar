@@ -25,7 +25,7 @@ const initialHeight = 480;
 function App() {
   const [count, setCount] = useState(10);
   const [height, setHeight] = useState(initialHeight);
-  const [custom, setCustom] = useState(true);
+  const [custom, setCustom] = useState(false);
   const [width, setWidth] = useState<number | null>(8);
   const [expanded, setExpanded] = useState<readonly Key[]>([]);
   const [resetKey, setResetKey] = useState(0);
@@ -44,7 +44,7 @@ function App() {
     setCount(10);
     setHeight(initialHeight);
     setExpanded([]);
-    setCustom(true);
+    setCustom(false);
     setWidth(8);
   }
   function panel(patched: boolean) {

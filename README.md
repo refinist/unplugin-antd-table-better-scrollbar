@@ -8,6 +8,18 @@
 
 插件监听表体和内容的尺寸，用表体实际占用的滚动条宽度同步表头。内容放得下时占位为 0；新增数据、展开一行或拖小表格高度后，如果滚动条出现，表头就为它让出相同宽度。使用系统滚动条和自定义宽度时都按实际值计算。
 
+### Windows 系统默认滚动条下的实测对比
+
+以下两张截图均来自 Windows，示例中的滚动条样式均为「系统默认」。**Ant Design Vue 和 Ant Design（React）都出现了相同的纵向滚动条空槽。** 两个示例都设为 10 行数据、表体高度 480 px，内容在纵向上放得下。每张图左侧的原生表格仍为纵向滚动条预留了 17 px，右侧启用插件后，纵向占位均为 0 px。
+
+**Ant Design Vue 4.x**
+
+![Windows 系统默认滚动条下，Ant Design Vue 原生表格右侧留有 17 px 空槽，启用插件后为 0 px](./docs/images/antdv-windows-default.png)
+
+**Ant Design 6.x（React）**
+
+![Windows 系统默认滚动条下，Ant Design React 原生表格右侧同样留有 17 px 空槽，启用插件后为 0 px](./docs/images/antd-windows-default.png)
+
 ### Ant Design Vue 的历史问题
 
 AntDV 3.2.20 和 4.2.6 的 `vc-table` 在固定表头时都会给表体设置 `overflow-y: scroll`。在占宽滚动条环境下，即使只有两行数据，浏览器也会留出滚动条槽。以下版本号对应各自原帖，插件的适用版本见下方「安装与使用」。[3.2.20 源码](https://github.com/vueComponent/ant-design-vue/blob/3.2.20/components/vc-table/Table.tsx#L383) · [4.2.6 源码](https://github.com/vueComponent/ant-design-vue/blob/4.2.6/components/vc-table/Table.tsx#L382)
