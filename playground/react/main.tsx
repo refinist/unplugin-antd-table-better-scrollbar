@@ -4,6 +4,7 @@ import {
   CheckOutlined,
   CloseOutlined,
   ColumnHeightOutlined,
+  GithubOutlined,
   ReloadOutlined,
 } from '@ant-design/icons';
 import { createRoot } from 'react-dom/client';
@@ -11,6 +12,7 @@ import { Button, Card, Col, Flex, InputNumber, Radio, Row, Table, Typography } f
 import OriginalTable from 'original-react-table';
 import 'antd/dist/reset.css';
 import '../style.css';
+import { githubLink } from '../github.ts';
 import { observeComparison, type ComparisonNotes } from '../comparison.ts';
 
 const columns = [
@@ -113,9 +115,12 @@ function App() {
       }
     >
       <Flex vertical gap={16}>
-        <Typography.Title level={2} style={{ margin: 0, fontSize: 22 }}>
-          {document.title}
-        </Typography.Title>
+        <header className='demo-header'>
+          <Typography.Title level={2} style={{ margin: 0, fontSize: 22 }}>
+            {document.title}
+          </Typography.Title>
+          <Button {...githubLink} type='text' icon={<GithubOutlined style={{ fontSize: 22 }} />} />
+        </header>
         <Card size='small'>
           <Flex gap={12} wrap align='center'>
             <span>数据量</span>

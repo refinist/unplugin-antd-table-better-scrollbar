@@ -4,8 +4,10 @@ import { resolve } from 'node:path';
 import { createElement as h } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Button, Flex, Table, Typography } from 'antd';
+import { GithubOutlined } from '@ant-design/icons';
 import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs';
 import { reactAntdLabel } from './react/title.ts';
+import { githubLink } from './github.ts';
 
 const vueTools = ['vite', 'rsbuild', 'vue-cli'];
 const reactTools = ['vite', 'rsbuild', 'webpack'];
@@ -92,14 +94,12 @@ const directory = renderToStaticMarkup(
         Flex,
         {
           align: 'center',
-          justify: 'space-between',
-          wrap: true,
           gap: 12,
           style: { marginBottom: 16 },
         },
         h(
           Typography.Title,
-          { level: 1, style: { fontSize: 24, margin: 0 } },
+          { level: 1, style: { flex: 1, minWidth: 0, fontSize: 24, margin: 0 } },
           'Antd 表格滚动条对比',
         ),
         h(
@@ -107,6 +107,12 @@ const directory = renderToStaticMarkup(
           { id: 'open-examples', type: 'primary' },
           `打开全部 ${groups.reduce((n, group) => n + group.tools.length, 0)} 个示例`,
         ),
+        h(Button, {
+          ...githubLink,
+          type: 'text',
+          style: { flex: 'none' },
+          icon: h(GithubOutlined, { style: { fontSize: 22 } }),
+        }),
       ),
       h(Typography.Text, { id: 'open-examples-status', role: 'status', type: 'secondary' }),
       h(Table<(typeof groups)[number]>, {

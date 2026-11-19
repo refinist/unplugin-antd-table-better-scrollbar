@@ -3,6 +3,7 @@ import {
   CheckOutlined,
   CloseOutlined,
   ColumnHeightOutlined,
+  GithubOutlined,
   ReloadOutlined,
 } from '@ant-design/icons-vue';
 import Button from 'demo-ui/button';
@@ -17,6 +18,7 @@ import Table from 'table-under-test';
 import OriginalTable from 'original-table';
 import 'table-style';
 import './style.css';
+import { githubLink } from './github.ts';
 import { observeComparison, type ComparisonNotes } from './comparison.ts';
 
 const defaultCount = 10;
@@ -185,11 +187,20 @@ createApp({
           },
         },
         [
-          h(
-            Typography.Title,
-            { level: 2, style: { margin: '0 0 16px', fontSize: '22px' } },
-            () => document.title,
-          ),
+          h('header', { class: 'demo-header', style: { marginBottom: '16px' } }, [
+            h(
+              Typography.Title,
+              { level: 2, style: { margin: 0, fontSize: '22px' } },
+              () => document.title,
+            ),
+            h(
+              Button,
+              { ...githubLink, type: 'text' },
+              {
+                icon: () => h(GithubOutlined, { style: { fontSize: '22px' } }),
+              },
+            ),
+          ]),
           h(Row, { gutter: [16, 16] }, () => [
             h(Col, { span: 24 }, () =>
               h(Card, { size: 'small' }, () =>
