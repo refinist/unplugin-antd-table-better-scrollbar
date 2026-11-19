@@ -1,9 +1,11 @@
+import { originalTablePath } from '../aliases.ts';
 import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/react/vite';
 import { reactTitle } from './title.ts';
 
 export function reactViteConfig(major: 7 | 8) {
   return {
     base: './',
+    resolve: { alias: { 'original-react-table': originalTablePath('antd') } },
     plugins: [AntdTableBetterScrollbar()],
     define: {
       'import.meta.env.VITE_PLAYGROUND_TITLE': JSON.stringify(

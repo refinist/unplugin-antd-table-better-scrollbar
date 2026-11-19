@@ -14,15 +14,11 @@ import Radio from 'demo-ui/radio';
 import Row from 'demo-ui/row';
 import Typography from 'demo-ui/typography';
 import Table from 'table-under-test';
-import originalImport from 'original-table';
+import OriginalTable from 'original-table';
 import 'table-style';
 import './style.css';
 import { observeComparison, type ComparisonNotes } from './comparison.ts';
 
-// The published CommonJS entry can arrive wrapped in a default export.
-const originalModule: typeof Table | { default: typeof Table } = originalImport;
-const OriginalTable =
-  'default' in originalModule ? (originalModule.default as typeof Table) : originalModule;
 const defaultCount = 10;
 const defaultWidth = 8;
 const count = ref(defaultCount);

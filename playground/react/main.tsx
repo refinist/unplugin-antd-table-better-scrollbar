@@ -8,8 +8,7 @@ import {
 } from '@ant-design/icons';
 import { createRoot } from 'react-dom/client';
 import { Button, Card, Col, Flex, InputNumber, Radio, Row, Table, Typography } from 'antd';
-// The official standalone bundle already contains its own unmodified table implementation.
-import { Table as OriginalTable } from 'antd/dist/antd.min.js';
+import OriginalTable from 'original-react-table';
 import 'antd/dist/reset.css';
 import '../style.css';
 import { observeComparison, type ComparisonNotes } from '../comparison.ts';

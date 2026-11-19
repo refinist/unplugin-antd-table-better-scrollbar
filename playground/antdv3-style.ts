@@ -1,0 +1,9 @@
+import 'antdv3/es/button/style/css.js';
+import 'antdv3/es/card/style/css.js';
+import 'antdv3/es/col/style/css.js';
+import 'antdv3/es/form/style/css.js';
+import 'antdv3/es/input-number/style/css.js';
+import 'antdv3/es/radio/style/css.js';
+import 'antdv3/es/row/style/css.js';
+import 'antdv3/es/table/style/css.js';
+import 'antdv3/es/typography/style/css.js';

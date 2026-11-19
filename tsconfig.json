@@ -9,7 +9,8 @@
     "types": ["node"],
     "paths": {
       "demo-ui/*": ["./node_modules/antdv4/es/*"],
-      "original-table": ["./node_modules/antdv4/lib/table/index.d.ts"],
+      "original-table": ["./node_modules/antdv4/es/table/index.d.ts"],
+      "original-react-table": ["./node_modules/antd/es/table/index.d.ts"],
       "table-under-test": ["./node_modules/antdv4/es/table/index.d.ts"],
       "unplugin-antd-table-better-scrollbar/vite": ["./src/vite.ts"],
       "unplugin-antd-table-better-scrollbar/webpack": ["./src/webpack.ts"],
