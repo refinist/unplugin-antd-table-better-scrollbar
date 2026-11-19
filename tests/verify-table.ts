@@ -1,14 +1,9 @@
 import assert from 'node:assert/strict';
-import { chromium } from '@playwright/test';
+import type { Browser } from '@playwright/test';
 
-export async function verifyTable(url: string, framework: 'vue' | 'react' = 'vue') {
-  const browser = await chromium.launch({
-    channel: process.env.CHROME_CHANNEL || undefined,
-    ignoreDefaultArgs: ['--hide-scrollbars'],
-    args: ['--disable-features=OverlayScrollbar'],
-  });
+export async function verifyTable(browser: Browser, url: string, framework: 'vue' | 'react') {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 1000 } });
   try {
-    const page = await browser.newPage({ viewport: { width: 1280, height: 1000 } });
     const verifyComparison = (highlight: boolean) =>
       page.waitForFunction(
         (expected) => {
@@ -176,6 +171,6 @@ export async function verifyTable(url: string, framework: 'vue' | 'react' = 'vue
       }
     }
   } finally {
-    await browser.close();
+    await page.close();
   }
 }

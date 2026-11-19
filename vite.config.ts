@@ -14,7 +14,15 @@ export default defineConfig({
     dts: true,
     deps: { neverBundle: ['vite'] },
   },
-  test: { globalSetup: ['./tests/build-plugin.ts'], testTimeout: 60000, restoreMocks: true },
+  test: {
+    globalSetup: ['./tests/build-plugin.ts'],
+    testTimeout: 60000,
+    restoreMocks: true,
+    coverage: {
+      include: ['src/**/*.ts'],
+      thresholds: { 100: true, perFile: true },
+    },
+  },
   fmt: { singleQuote: true, jsxSingleQuote: true },
   lint: { options: { typeAware: true, typeCheck: true } },
   staged: { '*': 'vp check --fix' },

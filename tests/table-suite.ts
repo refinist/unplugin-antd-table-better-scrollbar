@@ -1,9 +1,8 @@
-import { test } from 'vite-plus/test';
+import { afterAll, beforeAll, test } from 'vite-plus/test';
+import { chromium, type Browser } from '@playwright/test';
 import assert from 'node:assert/strict';
 import { verifyTable } from './verify-table.ts';
 import { resolve } from 'node:path';
-import * as vite7 from 'vite7';
-import * as vite8 from 'vite8';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 
@@ -20,7 +19,17 @@ function vueAliases(version: string, name: string) {
   };
 }
 
-for (const vite of [vite7, vite8]) {
+export function testTables(vite: typeof import('vite7') | typeof import('vite8')) {
+  let browser: Browser;
+  beforeAll(async () => {
+    browser = await chromium.launch({
+      channel: process.env.CHROME_CHANNEL || undefined,
+      ignoreDefaultArgs: ['--hide-scrollbars'],
+      args: ['--disable-features=OverlayScrollbar'],
+    });
+  });
+  afterAll(() => browser?.close());
+
   for (const [version, name] of [
     ['3.2.20', 'antdv3'],
     ['4.0.0', 'antdv40'],
@@ -58,6 +67,7 @@ for (const vite of [vite7, vite8]) {
           }
           onTestFinished(() => server.close());
           await verifyTable(
+            browser,
             server.resolvedUrls?.local[0] ?? assert.fail('Missing server URL'),
             react ? 'react' : 'vue',
           );
