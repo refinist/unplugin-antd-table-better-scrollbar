@@ -29,8 +29,7 @@
     "prepare": "vp config --hooks --no-agent",
     "dev": "vp run --concurrency-limit 8 -F \"playground-*\" dev",
     "build": "vp pack",
-    "test": "vp test run",
-    "check": "vp check",
+    "release": "bumpp --git-check",
     "build:site": "node playground/build-site.ts",
     "deploy:site": "pnpm run build:site && wrangler pages deploy site-dist --project-name antbs --branch main"
   },
@@ -53,6 +52,7 @@
     "antdv3": "npm:ant-design-vue@3.2.20",
     "antdv4": "npm:ant-design-vue@4.2.6",
     "antdv40": "npm:ant-design-vue@4.0.0",
+    "bumpp": "12.3.0",
     "changelogithub": "15.0.5",
     "esbuild": "^0.27.0",
     "react": "19.3.1",
