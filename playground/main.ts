@@ -70,14 +70,14 @@ function resizeHandle() {
     },
   });
 }
-const custom = ref(true);
+const custom = ref(false);
 const scrollbarWidth = ref<number | null>(defaultWidth);
 const expanded = ref<number[]>([]);
 const resetKey = ref(0);
 function resetAll() {
   count.value = defaultCount;
   height.value = defaultHeight;
-  custom.value = true;
+  custom.value = false;
   scrollbarWidth.value = defaultWidth;
   expanded.value = [];
   resetKey.value++;
