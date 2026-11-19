@@ -1,5 +1,7 @@
 # unplugin-antd-table-better-scrollbar
 
+**简体中文** · [English](./README.en.md)
+
 [![npm 版本](https://img.shields.io/npm/v/unplugin-antd-table-better-scrollbar)](https://www.npmjs.com/package/unplugin-antd-table-better-scrollbar)
 [![main 分支测试覆盖率](https://codecov.io/gh/refinist/unplugin-antd-table-better-scrollbar/branch/main/graph/badge.svg)](https://app.codecov.io/gh/refinist/unplugin-antd-table-better-scrollbar/tree/main)
 
