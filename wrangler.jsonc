@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "antdtbs",
+  "compatibility_date": "2026-11-19",
+  "assets": {
+    "directory": "./site-dist",
+    "not_found_handling": "404-page",
+  },
+  "routes": [{ "pattern": "antdtbs.refineup.com", "custom_domain": true }],
+}

@@ -1,3 +1,4 @@
+import { originalTablePath } from '../aliases.ts';
 import type { Configuration } from 'webpack';
 import 'webpack-dev-server';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
@@ -20,5 +21,6 @@ export default {
       { test: /\.css$/, use: ['style-loader', 'css-loader'] },
     ],
   },
+  resolve: { alias: { 'original-react-table': originalTablePath('antd') } },
   plugins: [AntdTableBetterScrollbar(), new HtmlWebpackPlugin({ title: reactTitle('Webpack 5') })],
 } satisfies Configuration;

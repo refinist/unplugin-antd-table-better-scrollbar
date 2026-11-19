@@ -1,21 +1,18 @@
 import { afterAll, beforeAll, test } from 'vite-plus/test';
 import { chromium, type Browser } from '@playwright/test';
 import assert from 'node:assert/strict';
+import { vueTableAliases } from '../playground/aliases.ts';
 import { verifyTable } from './verify-table.ts';
 import { resolve } from 'node:path';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 
 function vueAliases(version: string, name: string) {
-  const pkg = resolve('node_modules', name);
   return {
+    ...vueTableAliases(name),
     ...(version === '4.0.0'
       ? { vue: resolve('node_modules/vue33/dist/vue.runtime.esm-bundler.js') }
       : {}),
-    'demo-ui': pkg + '/es',
-    'original-table': pkg + '/lib/table/index.js',
-    'table-under-test': pkg + '/es/table/index.js',
-    'table-style': pkg + (version.startsWith('3.') ? '/dist/antd.css' : '/dist/reset.css'),
   };
 }
 

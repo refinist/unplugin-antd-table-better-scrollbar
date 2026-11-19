@@ -97,7 +97,11 @@ const directory = renderToStaticMarkup(
           gap: 12,
           style: { marginBottom: 16 },
         },
-        h(Typography.Title, { level: 1, style: { fontSize: 24, margin: 0 } }, '表格滚动条对比'),
+        h(
+          Typography.Title,
+          { level: 1, style: { fontSize: 24, margin: 0 } },
+          'Antd 表格滚动条对比',
+        ),
         h(
           Button,
           { id: 'open-examples', type: 'primary' },
@@ -119,7 +123,7 @@ const directory = renderToStaticMarkup(
 await writeFile(resolve(site, 'directory.css'), extractStyle(cache, true));
 await writeFile(
   resolve(site, 'index.html'),
-  `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>表格滚动条对比</title><link rel="stylesheet" href="./directory.css"></head><body>${directory}<script>(${bindOpenAll.toString()})();</script></body></html>`,
+  `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Antd 表格滚动条对比</title><link rel="stylesheet" href="./directory.css"></head><body>${directory}<script>(${bindOpenAll.toString()})();</script></body></html>`,
 );
 await writeFile(
   resolve(site, '404.html'),

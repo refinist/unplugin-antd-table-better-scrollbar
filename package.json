@@ -30,8 +30,9 @@
     "dev": "vp run --concurrency-limit 8 -F \"playground-*\" dev",
     "build": "vp pack",
     "release": "bumpp --git-check",
+    "build:original-tables": "node playground/build-original-tables.ts",
     "build:site": "node playground/build-site.ts",
-    "deploy:site": "pnpm run build:site && wrangler pages deploy site-dist --project-name antbs --branch main"
+    "deploy:site": "pnpm run build:site && wrangler deploy"
   },
   "dependencies": {
     "magic-string": "0.30.21",
