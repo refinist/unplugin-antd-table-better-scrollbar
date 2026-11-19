@@ -1,6 +1,6 @@
 # unplugin-antd-table-better-scrollbar
 
-[![npm 版本](https://img.shields.io/npm/v/unplugin-antd-table-better-scrollbar?color=a1b858&label=)](https://www.npmjs.com/package/unplugin-antd-table-better-scrollbar)
+[![npm 版本](https://img.shields.io/npm/v/unplugin-antd-table-better-scrollbar)](https://www.npmjs.com/package/unplugin-antd-table-better-scrollbar)
 [![main 分支测试覆盖率](https://codecov.io/gh/refinist/unplugin-antd-table-better-scrollbar/branch/main/graph/badge.svg)](https://app.codecov.io/gh/refinist/unplugin-antd-table-better-scrollbar/tree/main)
 
 让 Ant Design Vue 和 Ant Design（React）的固定表头表格按需显示原生纵向滚动条，并让表头始终为它留出实际占用的宽度。插件在构建时接入，业务代码继续使用原生 `<a-table>` 或 `<Table />`。
