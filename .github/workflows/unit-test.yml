@@ -13,14 +13,34 @@ env:
   CHROME_CHANNEL: chrome
 
 jobs:
-  unit-test:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 30
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      test: ${{ steps.filter.outputs.test }}
     steps:
+      - if: github.event_name == 'push'
+        uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          predicate-quantifier: every
+          filters: |
+            test:
+              - '!**/*.md'
+              - '!docs/**'
+              - '!LICENSE'
+              - '!.vscode/**'
+
+  ubuntu:
+    name: unit-test (ubuntu-latest)
+    needs: changes
+    if: &run_tests ${{ !cancelled() && needs.changes.outputs.test != 'false' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps: &test_steps
       - uses: actions/checkout@v6
       - uses: voidzero-dev/setup-vp@v1
         with:
@@ -38,8 +58,16 @@ jobs:
           if-no-files-found: error
           overwrite: true
 
+  windows:
+    name: unit-test (windows-latest)
+    needs: changes
+    if: *run_tests
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps: *test_steps
+
   coverage:
-    needs: unit-test
+    needs: [ubuntu, windows]
     runs-on: ubuntu-latest
     permissions:
       contents: read
