@@ -24,7 +24,7 @@ export function testTables(vite: typeof import('vite7') | typeof import('vite8')
       ignoreDefaultArgs: ['--hide-scrollbars'],
       args: ['--disable-features=OverlayScrollbar'],
     });
-  });
+  }, 60_000);
   afterAll(() => browser?.close(), 60_000);
 
   for (const [version, name] of [
