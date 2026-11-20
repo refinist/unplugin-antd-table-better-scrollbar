@@ -7,6 +7,51 @@
 
 Show the native vertical scrollbar in fixed-header Ant Design Vue and Ant Design (React) tables only when the rows overflow. The plugin keeps the header aligned with the body by reserving exactly the width the scrollbar occupies. It runs at build time, so your application can keep using `<a-table>` or `<Table />` as usual.
 
+## Installation and usage
+
+Install the plugin as a development dependency in the project that uses the table.
+
+```sh
+pnpm add -D unplugin-antd-table-better-scrollbar
+```
+
+**Vue with Vite** — Register the Vue entry point in your existing `vite.config.ts`.
+
+```ts
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/vite';
+
+export default defineConfig({ plugins: [vue(), AntdTableBetterScrollbar()] });
+```
+
+**React with Vite** — Use the `/react/vite` entry point.
+
+```ts
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/react/vite';
+
+export default defineConfig({ plugins: [react(), AntdTableBetterScrollbar()] });
+```
+
+Other build tools use the same `AntdTableBetterScrollbar()` call. Append the appropriate entry point below to the package name.
+
+| Build tool            | Vue entry point | React entry point | Where to register the plugin                                |
+| --------------------- | --------------- | ----------------- | ----------------------------------------------------------- |
+| Vite 7 / 8            | `/vite`         | `/react/vite`     | `plugins`                                                   |
+| Rspack / Rsbuild      | `/rspack`       | `/react/rspack`   | Rspack’s `plugins` or Rsbuild’s `tools.rspack.plugins`      |
+| Webpack 5 / Vue CLI 5 | `/webpack`      | `/react/webpack`  | Webpack’s `plugins` or Vue CLI’s `configureWebpack.plugins` |
+
+Vue also supports the explicit entry points `/vue/vite`, `/vue/rspack`, and `/vue/webpack`. The React entry points import the header divider CSS automatically, so Webpack projects need a CSS loader configured. Once the plugin is registered, set `scroll.y` as usual. No extra table props or wrapper components are required.
+
+| Component library  | Supported scope and tested versions                                                                                                                                                                             |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Ant Design Vue     | Targets 3.2.20 and stable 4.x releases starting with 4.0.0. Regression tests cover 3.2.20, 4.0.0, and 4.2.6. Version 4.0.0 is tested with Vue 3.3.13.                                                           |
+| Ant Design (React) | Standard fixed-header tables. Tested with React and React DOM 19.3.1, Ant Design 6.7.1, and `@rc-component/table` 1.12.0. Virtual tables and function-based custom table bodies retain their upstream behavior. |
+
+The plugin patches the component library’s ESM table implementation. It warns and attempts the patch when it encounters an Ant Design Vue version outside the target range or an unverified version of the underlying React table package. If it cannot match the code for the core scrollbar patch, the build fails and identifies the affected file. The React divider adjustment is optional. The plugin silently skips it if it cannot find a unique match in the header code. If upstream has already removed the divider, the stylesheet leaves it that way.
+
 ## Why the last column can fall out of alignment
 
 Setting `scroll.y` can leave an empty gray scrollbar gutter on the right, even in a table with just two rows. This is especially visible on Windows and other systems where scrollbars take up layout space. Setting `overflow-y: auto` on the table body removes the empty gutter. The fixed header, however, is a separate table. If it still reserves space for a scrollbar, the last column heading shifts out of alignment with its cells.
@@ -52,51 +97,6 @@ Other short-table reports cover a height-dependent reproduction in Chrome on Win
 One report reproduced a gutter with no scrollable content using `y: "max-content"`. Another requested that the scrollbar appear only when content exceeds a threshold. [#25749](https://github.com/ant-design/ant-design/issues/25749) · [#25362](https://github.com/ant-design/ant-design/issues/25362)
 
 **On React, the plugin also removes an extra divider at the end of the header.** When the vertical scrollbar appears, Ant Design adds a spacer cell after the last data column and draws a column divider between the two. The plugin hides that decorative line while preserving the dividers between data columns and the space occupied by the scrollbar. Issue #56713 discusses column widths shifting when data is added to an empty table. A comment on that issue documents the extra divider. [Divider report on #56713](https://github.com/ant-design/ant-design/issues/56713#issuecomment-3815411230)
-
-## Installation and usage
-
-Install the plugin as a development dependency in the project that uses the table.
-
-```sh
-pnpm add -D unplugin-antd-table-better-scrollbar
-```
-
-**Vue with Vite** — Register the Vue entry point in your existing `vite.config.ts`.
-
-```ts
-import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/vite';
-
-export default defineConfig({ plugins: [vue(), AntdTableBetterScrollbar()] });
-```
-
-**React with Vite** — Use the `/react/vite` entry point.
-
-```ts
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/react/vite';
-
-export default defineConfig({ plugins: [react(), AntdTableBetterScrollbar()] });
-```
-
-Other build tools use the same `AntdTableBetterScrollbar()` call. Append the appropriate entry point below to the package name.
-
-| Build tool            | Vue entry point | React entry point | Where to register the plugin                                |
-| --------------------- | --------------- | ----------------- | ----------------------------------------------------------- |
-| Vite 7 / 8            | `/vite`         | `/react/vite`     | `plugins`                                                   |
-| Rspack / Rsbuild      | `/rspack`       | `/react/rspack`   | Rspack’s `plugins` or Rsbuild’s `tools.rspack.plugins`      |
-| Webpack 5 / Vue CLI 5 | `/webpack`      | `/react/webpack`  | Webpack’s `plugins` or Vue CLI’s `configureWebpack.plugins` |
-
-Vue also supports the explicit entry points `/vue/vite`, `/vue/rspack`, and `/vue/webpack`. The React entry points import the header divider CSS automatically, so Webpack projects need a CSS loader configured. Once the plugin is registered, set `scroll.y` as usual. No extra table props or wrapper components are required.
-
-| Component library  | Supported scope and tested versions                                                                                                                                                                             |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Ant Design Vue     | Targets 3.2.20 and stable 4.x releases starting with 4.0.0. Regression tests cover 3.2.20, 4.0.0, and 4.2.6. Version 4.0.0 is tested with Vue 3.3.13.                                                           |
-| Ant Design (React) | Standard fixed-header tables. Tested with React and React DOM 19.3.1, Ant Design 6.7.1, and `@rc-component/table` 1.12.0. Virtual tables and function-based custom table bodies retain their upstream behavior. |
-
-The plugin patches the component library’s ESM table implementation. It warns and attempts the patch when it encounters an Ant Design Vue version outside the target range or an unverified version of the underlying React table package. If it cannot match the code for the core scrollbar patch, the build fails and identifies the affected file. The React divider adjustment is optional. The plugin silently skips it if it cannot find a unique match in the header code. If upstream has already removed the divider, the stylesheet leaves it that way.
 
 ## Development and pull requests
 
