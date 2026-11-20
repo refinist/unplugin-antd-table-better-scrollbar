@@ -1,6 +1,9 @@
 import { execFileSync } from 'node:child_process';
-import { cp, mkdtempDisposable, rename, rm, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { mkdtempDisposable, readFile, rename, rm, writeFile } from 'node:fs/promises';
+import { join, resolve } from 'node:path';
+import { tmpdir } from 'node:os';
+import { buildSiteVendor } from './site-vendors.ts';
+import { buildSiteAssets, reactRoute, vueRoute } from './site-assets.ts';
 import { createElement as h } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Button, Flex, Table, Typography } from 'antd';
@@ -11,10 +14,26 @@ import { githubLink } from './github.ts';
 
 const vueTools = ['vite', 'rsbuild', 'vue-cli'];
 const reactTools = ['vite', 'rsbuild', 'webpack'];
-const vueRoute = (major: string) => (major === 'next' ? 'vue-antdv-next' : `vue-antdv${major}`);
-const reactRoute = 'react-antd6';
 await using staging = await mkdtempDisposable(resolve('.site-build-'));
 const site = staging.path;
+await using shims = await mkdtempDisposable(join(tmpdir(), 'antd-site-shims-'));
+const assets = await buildSiteAssets(resolve(site, 'shared'), shims.path);
+
+execFileSync(process.execPath, ['playground/build-original-tables.ts'], { stdio: 'inherit' });
+const vendors: Record<string, string> = {};
+for (const pkg of ['antdv3', 'antdv4', 'antdv-next', 'antd']) {
+  vendors[pkg] = await buildSiteVendor(pkg, resolve(site, 'shared'), shims.path);
+}
+
+async function linkAssets(route: string, framework: 'vue' | 'react', pkg: string) {
+  const index = join(site, route, 'index.html');
+  const html = await readFile(index, 'utf8');
+  if (!html.includes('<head>')) throw new Error(`Missing <head> in ${route}`);
+  const tags =
+    (pkg === 'antdv3' ? `<link rel="stylesheet" href="${assets.antdv3}">` : '') +
+    `<script src="${assets[framework]}"></script><script src="${vendors[pkg]}"></script>`;
+  await writeFile(index, html.replace('<head>', '<head>' + tags));
+}
 
 function workspaceTool(tool: string) {
   return tool === 'vite' ? 'vite8' : tool;
@@ -23,32 +42,29 @@ function workspaceTool(tool: string) {
 function build(filter: string[], major: string) {
   execFileSync('pnpm', ['exec', 'vp', 'run', ...filter.flatMap((name) => ['-F', name]), 'build'], {
     stdio: 'inherit',
-    env: { ...process.env, ANTDV_MAJOR: major, PLAYGROUND_VITE_LABEL: 'Vite' },
+    env: {
+      ...process.env,
+      PLAYGROUND_SITE_OUTPUT: site,
+      PLAYGROUND_SITE_SHIMS: shims.path,
+      ANTDV_MAJOR: major,
+      PLAYGROUND_VITE_LABEL: 'Vite',
+    },
   });
-}
-async function collectVue(major: string) {
-  const prefix = major === 'next' ? 'antdv-next-' : '';
-  for (const tool of vueTools) {
-    const output =
-      tool === 'vite'
-        ? `playground/dist/${prefix}${workspaceTool(tool)}`
-        : `playground/${prefix}${tool}/dist`;
-    await cp(output, resolve(site, vueRoute(major), tool), { recursive: true });
-  }
 }
 const vuePackages = vueTools.map((tool) => 'playground-' + workspaceTool(tool));
 const reactPackages = reactTools.map((tool) => 'playground-react-' + workspaceTool(tool));
 const nextPackages = vueTools.map((tool) => 'playground-antdv-next-' + workspaceTool(tool));
 build(vuePackages, '3');
-await collectVue('3');
 build([...vuePackages, ...reactPackages, ...nextPackages], '4');
-await collectVue('next');
-await collectVue('4');
-for (const tool of reactTools) {
-  await cp(`playground/react-${workspaceTool(tool)}/dist`, resolve(site, reactRoute, tool), {
-    recursive: true,
-  });
+for (const major of ['3', '4', 'next']) {
+  for (const tool of vueTools)
+    await linkAssets(
+      `${vueRoute(major)}/${tool}`,
+      'vue',
+      major === 'next' ? 'antdv-next' : 'antdv' + major,
+    );
 }
+for (const tool of reactTools) await linkAssets(`${reactRoute}/${tool}`, 'react', 'antd');
 const labels: Record<string, string> = {
   vite: 'Vite',
   rsbuild: 'Rsbuild',
