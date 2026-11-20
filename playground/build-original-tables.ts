@@ -6,17 +6,21 @@ import { createRequire } from 'node:module';
 import { dirname, join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { tableEntry } from './aliases.ts';
+
 const require = createRequire(import.meta.url);
 const output = fileURLToPath(new URL('../node_modules/.cache/original-tables/', import.meta.url));
 await mkdir(output, { recursive: true });
 await using staging = await mkdtempDisposable(join(output, 'build-'));
 
-for (const pkg of ['antd', 'antdv3', 'antdv40', 'antdv4']) {
-  const entry = require.resolve(pkg + '/es/table/index.js');
+for (const pkg of ['antd', 'antdv3', 'antdv40', 'antdv4', 'antdv-next']) {
+  const entry = tableEntry(pkg);
   const engine =
     pkg === 'antd'
       ? createRequire(entry).resolve('@rc-component/table/es/index.js')
-      : require.resolve(pkg + '/es/vc-table/index.js');
+      : pkg === 'antdv-next'
+        ? createRequire(entry).resolve('@v-c/table')
+        : require.resolve(pkg + '/es/vc-table/index.js');
   const roots = [dirname(entry) + sep, dirname(engine) + sep];
   const filename = pkg + '.mjs';
   await build({

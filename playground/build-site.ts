@@ -11,7 +11,7 @@ import { githubLink } from './github.ts';
 
 const vueTools = ['vite', 'rsbuild', 'vue-cli'];
 const reactTools = ['vite', 'rsbuild', 'webpack'];
-const vueRoute = (major: string) => `vue-antdv${major}`;
+const vueRoute = (major: string) => (major === 'next' ? 'vue-antdv-next' : `vue-antdv${major}`);
 const reactRoute = 'react-antd6';
 await using staging = await mkdtempDisposable(resolve('.site-build-'));
 const site = staging.path;
@@ -27,17 +27,22 @@ function build(filter: string[], major: string) {
   });
 }
 async function collectVue(major: string) {
+  const prefix = major === 'next' ? 'antdv-next-' : '';
   for (const tool of vueTools) {
     const output =
-      tool === 'vite' ? `playground/dist/${workspaceTool(tool)}` : `playground/${tool}/dist`;
+      tool === 'vite'
+        ? `playground/dist/${prefix}${workspaceTool(tool)}`
+        : `playground/${prefix}${tool}/dist`;
     await cp(output, resolve(site, vueRoute(major), tool), { recursive: true });
   }
 }
 const vuePackages = vueTools.map((tool) => 'playground-' + workspaceTool(tool));
 const reactPackages = reactTools.map((tool) => 'playground-react-' + workspaceTool(tool));
+const nextPackages = vueTools.map((tool) => 'playground-antdv-next-' + workspaceTool(tool));
 build(vuePackages, '3');
 await collectVue('3');
-build([...vuePackages, ...reactPackages], '4');
+build([...vuePackages, ...reactPackages, ...nextPackages], '4');
+await collectVue('next');
 await collectVue('4');
 for (const tool of reactTools) {
   await cp(`playground/react-${workspaceTool(tool)}/dist`, resolve(site, reactRoute, tool), {
@@ -51,6 +56,7 @@ const labels: Record<string, string> = {
   webpack: 'Webpack 5',
 };
 const groups = [
+  { key: vueRoute('next'), name: 'Antdv Next', tools: vueTools },
   { key: vueRoute('4'), name: 'Ant Design Vue 4.x +', tools: vueTools },
   { key: vueRoute('3'), name: 'Ant Design Vue 3.2.20', tools: vueTools },
   { key: reactRoute, name: `${reactAntdLabel}（React）`, tools: reactTools },

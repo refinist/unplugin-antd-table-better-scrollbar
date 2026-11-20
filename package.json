@@ -27,7 +27,7 @@
   },
   "scripts": {
     "prepare": "vp config --hooks --no-agent",
-    "dev": "vp run --concurrency-limit 8 -F \"playground-*\" dev",
+    "dev": "vp run --concurrency-limit 12 -F \"playground-*\" dev",
     "build": "vp pack",
     "release": "bumpp --git-check",
     "build:original-tables": "node playground/build-original-tables.ts",
@@ -50,6 +50,7 @@
     "@types/react-dom": "19.3.0",
     "@vitest/coverage-v8": "5.1.0",
     "antd": "6.7.1",
+    "antdv-next": "1.8.2",
     "antdv3": "npm:ant-design-vue@3.2.20",
     "antdv4": "npm:ant-design-vue@4.2.6",
     "antdv40": "npm:ant-design-vue@4.0.0",

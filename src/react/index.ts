@@ -1,5 +1,5 @@
 import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { dividerEdits } from '../divider.ts';
 import { applyEdits, observeCall, packageVersion, tablePlugin } from '../plugin.ts';
 
 const target = /[\\/]@rc-component[\\/]table[\\/]es[\\/]Table\.js$/;
@@ -15,8 +15,6 @@ const originalEffect = `useLayoutEffect(() => {
     }
   }, []);`;
 
-const headerStyle = import.meta.resolve('unplugin-antd-table-better-scrollbar/react/header.css');
-
 export function transformReactTable(code: string, id: string) {
   if (!target.test(id)) return;
   const version = packageVersion(resolve(dirname(id), '../package.json'), '@rc-component/table');
@@ -29,28 +27,16 @@ export function transformReactTable(code: string, id: string) {
     );
   }
 
-  // The stylesheet and its scope marker are a single optional change.
-  const reactImport = "import * as React from 'react';";
-  const headerClass = 'className: `${prefixCls}-header`,';
-  const canScopeDivider = [reactImport, headerClass].every((anchor) => {
-    const index = code.indexOf(anchor);
-    return index >= 0 && index === code.lastIndexOf(anchor);
-  });
-  const dividerEdits = canScopeDivider
-    ? [
-        [reactImport, `import ${JSON.stringify(fileURLToPath(headerStyle))};\n${reactImport}`],
-        [
-          headerClass,
-          'className: `${prefixCls}-header${fixHeader && typeof customizeScrollBody !== "function" ? " antd-better-scrollbar-header" : ""}`,',
-        ],
-      ]
-    : [];
-
   return applyEdits(
     code,
     id,
     [
-      ...dividerEdits,
+      ...dividerEdits(
+        code,
+        "import * as React from 'react';",
+        'className: `${prefixCls}-header`,',
+        'className: `${prefixCls}-header${fixHeader && typeof customizeScrollBody !== "function" ? " antd-better-scrollbar-header" : ""}`,',
+      ),
       [
         "overflowY: hasData ? 'scroll' : 'auto'",
         "overflowY: typeof customizeScrollBody === 'function' && hasData ? 'scroll' : 'auto'",

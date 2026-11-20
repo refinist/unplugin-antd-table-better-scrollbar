@@ -1,7 +1,11 @@
 import assert from 'node:assert/strict';
 import type { Browser } from '@playwright/test';
 
-export async function verifyTable(browser: Browser, url: string, framework: 'vue' | 'react') {
+export async function verifyTable(
+  browser: Browser,
+  url: string,
+  framework: 'vue' | 'react' | 'antdv-next',
+) {
   const page = await browser.newPage({ viewport: { width: 1280, height: 1000 } });
   try {
     const verifyComparison = (highlight: boolean) =>
@@ -45,24 +49,21 @@ export async function verifyTable(browser: Browser, url: string, framework: 'vue
       undefined,
       { timeout: 5000 },
     );
-    if (framework === 'react') {
-      const dividers = await page.evaluate(() =>
-        ['#original', '#patched'].map((root) => {
-          const gutter = document.querySelector(
-            root + ' .ant-table-header .ant-table-cell-scrollbar',
-          )!;
-          return [
-            gutter.previousElementSibling!.previousElementSibling!,
-            gutter.previousElementSibling!,
-          ].map((cell) => {
-            const line = getComputedStyle(cell, '::before');
-            return line.content !== 'none' && line.display !== 'none';
-          });
-        }),
-      );
-      assert.equal(dividers[1][0], dividers[0][0], 'preserve the normal column divider');
-      assert.equal(dividers[1][1], false, 'no extra divider next to the scrollbar');
-    }
+    const dividers = await page.evaluate(() =>
+      ['#original', '#patched'].map((root) => {
+        const gutter = document.querySelector(
+          root + ' .ant-table-header .ant-table-cell-scrollbar',
+        )!;
+        const lastColumn = gutter.previousElementSibling!;
+        return [lastColumn.previousElementSibling!, lastColumn].map(
+          (cell) => getComputedStyle(cell, '::before').display,
+        );
+      }),
+    );
+    assert.notEqual(dividers[0][0], 'none', 'original normal column divider');
+    assert.notEqual(dividers[0][1], 'none', 'the original header retains the upstream style');
+    assert.equal(dividers[1][0], dividers[0][0], 'preserve the normal column divider');
+    assert.equal(dividers[1][1], 'none', 'explicitly hide the divider next to the scrollbar');
     await page.getByText('系统默认', { exact: true }).click();
     await page.getByText('自定义', { exact: true }).click();
     assert.equal(await widthInput.inputValue(), '16');
