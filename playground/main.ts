@@ -8,11 +8,10 @@ import {
 } from '@ant-design/icons-vue';
 import Button from 'demo-ui/button';
 import Card from 'demo-ui/card';
-import Col from 'demo-ui/col';
+import { Col, Row } from 'demo-ui/grid';
 import InputNumber from 'demo-ui/input-number';
-import Form from 'demo-ui/form';
+import Form, { FormItem } from 'demo-ui/form';
 import Radio from 'demo-ui/radio';
-import Row from 'demo-ui/row';
 import Typography from 'demo-ui/typography';
 import Table from 'table-under-test';
 import OriginalTable from 'original-table';
@@ -94,7 +93,7 @@ function group<T extends string | number>(
   options: { label: string; value: T }[],
   update: (value: T) => void,
 ) {
-  return h(Form.Item, { label }, () =>
+  return h(FormItem, { label }, () =>
     h(Radio.Group, {
       'aria-label': label,
       value,
@@ -225,7 +224,7 @@ createApp({
                       custom.value = value === 'custom';
                     },
                   ),
-                  h(Form.Item, {}, () =>
+                  h(FormItem, {}, () =>
                     h(InputNumber, {
                       'aria-label': '自定义滚动条宽度',
                       addonAfter: 'px',
@@ -244,7 +243,7 @@ createApp({
                       },
                     }),
                   ),
-                  h(Form.Item, {}, () => h(Button, { onClick: resetAll }, () => '重置所有')),
+                  h(FormItem, {}, () => h(Button, { onClick: resetAll }, () => '重置所有')),
                 ]),
               ),
             ),

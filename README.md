@@ -5,7 +5,7 @@
 [![npm version](https://img.shields.io/npm/v/unplugin-antd-table-better-scrollbar)](https://www.npmjs.com/package/unplugin-antd-table-better-scrollbar)
 [![Test coverage on main](https://codecov.io/gh/refinist/unplugin-antd-table-better-scrollbar/branch/main/graph/badge.svg)](https://app.codecov.io/gh/refinist/unplugin-antd-table-better-scrollbar/tree/main)
 
-Show the native vertical scrollbar in fixed-header Ant Design Vue and Ant Design (React) tables only when the rows overflow. The plugin keeps the header aligned with the body by reserving exactly the width the scrollbar occupies. It runs at build time, so your application can keep using `<a-table>` or `<Table />` as usual.
+Show the native vertical scrollbar in fixed-header Ant Design Vue, Antdv Next, and Ant Design (React) tables only when the rows overflow. The plugin keeps the header aligned with the body by reserving exactly the width the scrollbar occupies. It runs at build time, so your application can keep using `<a-table>` or `<Table />` as usual.
 
 ## Installation and usage
 
@@ -43,14 +43,15 @@ Other build tools use the same `AntdTableBetterScrollbar()` call. Append the app
 | Rspack / Rsbuild      | `/rspack`       | `/react/rspack`   | Rspack’s `plugins` or Rsbuild’s `tools.rspack.plugins`      |
 | Webpack 5 / Vue CLI 5 | `/webpack`      | `/react/webpack`  | Webpack’s `plugins` or Vue CLI’s `configureWebpack.plugins` |
 
-Vue also supports the explicit entry points `/vue/vite`, `/vue/rspack`, and `/vue/webpack`. The React entry points import the header divider CSS automatically, so Webpack projects need a CSS loader configured. Once the plugin is registered, set `scroll.y` as usual. No extra table props or wrapper components are required.
+Vue also supports the explicit entry points `/vue/vite`, `/vue/rspack`, and `/vue/webpack`. The plugin imports the header divider CSS automatically, so Webpack projects need a CSS loader configured. Once the plugin is registered, set `scroll.y` as usual. No extra table props or wrapper components are required.
 
 | Component library  | Supported scope and tested versions                                                                                                                                                                             |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Ant Design Vue     | Targets 3.2.20 and stable 4.x releases starting with 4.0.0. Regression tests cover 3.2.20, 4.0.0, and 4.2.6. Version 4.0.0 is tested with Vue 3.3.13.                                                           |
+| Antdv Next         | Standard fixed-header tables. Tested with `antdv-next` 1.8.2 and `@v-c/table` 1.3.8 using the Vue entry points.                                                                                                 |
 | Ant Design (React) | Standard fixed-header tables. Tested with React and React DOM 19.3.1, Ant Design 6.7.1, and `@rc-component/table` 1.12.0. Virtual tables and function-based custom table bodies retain their upstream behavior. |
 
-The plugin patches the component library’s ESM table implementation. It warns and attempts the patch when it encounters an Ant Design Vue version outside the target range or an unverified version of the underlying React table package. If it cannot match the code for the core scrollbar patch, the build fails and identifies the affected file. The React divider adjustment is optional. The plugin silently skips it if it cannot find a unique match in the header code. If upstream has already removed the divider, the stylesheet leaves it that way.
+The plugin patches the component library’s ESM table implementation. It warns and attempts the patch when it encounters an Ant Design Vue version outside the target range or an unverified version of the underlying Antdv Next or React table package. If it cannot match the code for the core scrollbar patch, the build fails and identifies the affected file. The header divider adjustment is optional. The plugin silently skips it if it cannot find a unique match in the header code. If upstream has already removed the divider, the stylesheet leaves it that way.
 
 ## Why the last column can fall out of alignment
 
@@ -96,7 +97,7 @@ Other short-table reports cover a height-dependent reproduction in Chrome on Win
 
 One report reproduced a gutter with no scrollable content using `y: "max-content"`. Another requested that the scrollbar appear only when content exceeds a threshold. [#25749](https://github.com/ant-design/ant-design/issues/25749) · [#25362](https://github.com/ant-design/ant-design/issues/25362)
 
-**On React, the plugin also removes an extra divider at the end of the header.** When the vertical scrollbar appears, Ant Design adds a spacer cell after the last data column and draws a column divider between the two. The plugin hides that decorative line while preserving the dividers between data columns and the space occupied by the scrollbar. Issue #56713 discusses column widths shifting when data is added to an empty table. A comment on that issue documents the extra divider. [Divider report on #56713](https://github.com/ant-design/ant-design/issues/56713#issuecomment-3815411230)
+**The plugin hides the extra header divider in Ant Design Vue, Antdv Next, and React.** When the vertical scrollbar appears, Ant Design adds a spacer cell after the last data column and draws a column divider between the two. The plugin hides that decorative line while preserving the dividers between data columns and the space occupied by the scrollbar. Issue #56713 discusses column widths shifting when data is added to an empty table. A comment on that issue documents the extra divider. [Divider report on #56713](https://github.com/ant-design/ant-design/issues/56713#issuecomment-3815411230)
 
 ## Development and pull requests
 
@@ -107,12 +108,14 @@ pnpm install
 pnpm exec playwright install chromium
 pnpm exec vp run playground-vite8#dev        # Ant Design Vue
 # or
+pnpm exec vp run playground-antdv-next-vite8#dev  # Antdv Next
+# or
 pnpm exec vp run playground-react-vite8#dev  # Ant Design React
 ```
 
 Each demo shows the unmodified table on the left and the plugin-enabled table on the right. At the default height, switch from **2 rows → 100 rows → 2 rows** to see the scrollbar gutter appear and disappear. Expand a row, drag the height control, or change the custom scrollbar width from 8 px to 48 px to check that the header stays aligned. On Windows, select **系统默认** (system default). On systems with overlay scrollbars, select **自定义** (custom) to try a scrollbar that takes up layout space.
 
-The Vue demos use Ant Design Vue 4 by default. Set `ANTDV_MAJOR=3` to run them with 3.2.20. Running `pnpm dev` starts all eight development servers.
+The Vue demos use Ant Design Vue 4 by default. Set `ANTDV_MAJOR=3` to run them with 3.2.20. Running `pnpm dev` starts all 12 development servers. Antdv Next has local demos for Vite 7, Vite 8, Rsbuild, and Vue CLI. The static site includes Vite 8, Rsbuild, and Vue CLI.
 
 After making changes, run the checks from the project root.
 

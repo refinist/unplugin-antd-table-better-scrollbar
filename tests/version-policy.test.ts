@@ -8,6 +8,9 @@ import { test, vi } from 'vite-plus/test';
 import { transformTable } from '../src/index.ts';
 
 const require = createRequire(import.meta.url);
+const nextTableId = createRequire(require.resolve('antdv-next/package.json')).resolve(
+  '@v-c/table/dist/Table.js',
+);
 const reactTableId = createRequire(require.resolve('antd/package.json')).resolve(
   '@rc-component/table/es/Table.js',
 );
@@ -17,6 +20,7 @@ test('lookalike modules without the target package are left alone', async ({ onT
   onTestFinished(() => rm(root, { recursive: true, force: true }));
   const cases = [
     { dir: root, file: 'es/vc-table/Table.js', transform: transformTable },
+    { dir: join(root, '@v-c/table'), file: 'dist/Table.js', transform: transformTable },
     { dir: join(root, '@rc-component/table'), file: 'es/Table.js', transform: transformReactTable },
   ];
   for (const { dir, file, transform } of cases) {
@@ -64,6 +68,31 @@ test('an unknown version warns once and still requires every replacement to matc
   assert.throws(
     () => transformTable(code + 'useProvideSticky();', id),
     /5\.0\.0.*useProvideSticky/,
+  );
+  assert.equal(warning.mock.calls.length, 1);
+});
+
+test('Antdv Next validates its table engine and warns once for untested versions', async ({
+  onTestFinished,
+}) => {
+  const code = await readFile(nextTableId, 'utf8');
+  const warning = vi.spyOn(console, 'warn').mockImplementation(() => {});
+  assert.match(transformTable(code, nextTableId)!.code, /new view\.ResizeObserver/);
+  assert.equal(warning.mock.calls.length, 0);
+
+  const root = await mkdtemp(join(tmpdir(), 'scrollbar-next-version-'));
+  onTestFinished(() => rm(root, { recursive: true, force: true }));
+  const dir = join(root, '@v-c/table');
+  await mkdir(dir, { recursive: true });
+  await writeFile(
+    join(dir, 'package.json'),
+    JSON.stringify({ name: '@v-c/table', version: '2.0.0' }),
+  );
+  const id = join(dir, 'dist/Table.js');
+  assert.ok(transformTable(code, id));
+  assert.throws(
+    () => transformTable(code.replace('overflowY:', 'overflow:'), id),
+    /@v-c\/table 2\.0\.0.*expected exactly one match/,
   );
   assert.equal(warning.mock.calls.length, 1);
 });

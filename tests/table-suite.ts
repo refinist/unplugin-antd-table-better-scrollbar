@@ -25,27 +25,35 @@ export function testTables(vite: typeof import('vite7') | typeof import('vite8')
       args: ['--disable-features=OverlayScrollbar'],
     });
   });
-  afterAll(() => browser?.close());
+  afterAll(() => browser?.close(), 60_000);
 
   for (const [version, name] of [
     ['3.2.20', 'antdv3'],
     ['4.0.0', 'antdv40'],
     ['4.2.6', 'antdv4'],
     ['6.7.1', 'antd'],
+    ['1.8.2', 'antdv-next'],
   ]) {
     const react = name === 'antd';
+    const next = name === 'antdv-next';
     for (const mode of ['dev', 'build']) {
       test(
-        (react ? 'Ant Design React ' : 'AntDV ') + version + ' / Vite ' + vite.version + ' ' + mode,
+        (react ? 'Ant Design React ' : next ? 'Antdv Next ' : 'AntDV ') +
+          version +
+          ' / Vite ' +
+          vite.version +
+          ' ' +
+          mode,
         async ({ onTestFinished }) => {
           const bundler = 'vite' + vite.version.split('.')[0];
+          const workspace = (react ? 'react-' : next ? 'antdv-next-' : '') + bundler;
           const config = {
             root: resolve(react ? 'playground/react' : 'playground'),
             logLevel: 'error' as const,
-            configFile: resolve('playground', (react ? 'react-' : '') + bundler, 'vite.demo.ts'),
+            configFile: resolve('playground', workspace, 'vite.demo.ts'),
             optimizeDeps: { force: true },
             cacheDir: resolve('node_modules/.vite-' + vite.version + '-' + version),
-            resolve: { alias: react ? {} : vueAliases(version, name) },
+            resolve: { alias: react || next ? {} : vueAliases(version, name) },
             server: { host: '127.0.0.1', port: 0, strictPort: false },
           };
           let server;
@@ -66,7 +74,7 @@ export function testTables(vite: typeof import('vite7') | typeof import('vite8')
           await verifyTable(
             browser,
             server.resolvedUrls?.local[0] ?? assert.fail('Missing server URL'),
-            react ? 'react' : 'vue',
+            react ? 'react' : next ? 'antdv-next' : 'vue',
           );
           if (mode === 'dev') {
             const metadata = await readFile(
@@ -77,7 +85,11 @@ export function testTables(vite: typeof import('vite7') | typeof import('vite8')
               optimized: Record<string, { src: string }>;
             };
             if (react) assert.match(optimized.antd.src, /antd/);
-            else assert.match(optimized['table-under-test'].src, /ant-design-vue/);
+            else
+              assert.match(
+                optimized['table-under-test'].src,
+                next ? /antdv-next/ : /ant-design-vue/,
+              );
           }
         },
       );

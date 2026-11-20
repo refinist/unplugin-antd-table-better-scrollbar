@@ -1,0 +1,9 @@
+{
+  "name": "playground-antdv-next-vite7",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "unplugin-antd-table-better-scrollbar": "workspace:*",
+    "vite": "7.3.8"
+  }
+}

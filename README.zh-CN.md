@@ -5,7 +5,7 @@
 [![npm 版本](https://img.shields.io/npm/v/unplugin-antd-table-better-scrollbar)](https://www.npmjs.com/package/unplugin-antd-table-better-scrollbar)
 [![main 分支测试覆盖率](https://codecov.io/gh/refinist/unplugin-antd-table-better-scrollbar/branch/main/graph/badge.svg)](https://app.codecov.io/gh/refinist/unplugin-antd-table-better-scrollbar/tree/main)
 
-让 Ant Design Vue 和 Ant Design（React）的固定表头表格按需显示原生纵向滚动条，并让表头始终为它留出实际占用的宽度。插件在构建时接入，业务代码继续使用原生 `<a-table>` 或 `<Table />`。
+让 Ant Design Vue、Antdv Next 和 Ant Design（React）的固定表头表格按需显示原生纵向滚动条，并让表头始终为它留出实际占用的宽度。插件在构建时接入，业务代码继续使用原生 `<a-table>` 或 `<Table />`。
 
 ## 安装与使用
 
@@ -43,14 +43,15 @@ export default defineConfig({ plugins: [react(), AntdTableBetterScrollbar()] });
 | Rspack / Rsbuild      | `/rspack`  | `/react/rspack`  | Rspack 的 `plugins` 或 Rsbuild 的 `tools.rspack.plugins`      |
 | Webpack 5 / Vue CLI 5 | `/webpack` | `/react/webpack` | Webpack 的 `plugins` 或 Vue CLI 的 `configureWebpack.plugins` |
 
-Vue 也支持显式的 `/vue/vite`、`/vue/rspack`、`/vue/webpack`。React 入口会自动引入分隔线样式，Webpack 项目需要能加载 CSS。接入后照常设置 `scroll.y`，无需添加表格属性或包装组件。
+Vue 也支持显式的 `/vue/vite`、`/vue/rspack`、`/vue/webpack`。插件会自动引入分隔线样式，Webpack 项目需要能加载 CSS。接入后照常设置 `scroll.y`，无需添加表格属性或包装组件。
 
 | 组件库           | 适用范围与验证版本                                                                                                                                |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Ant Design Vue   | 面向 3.2.20 和从 4.0.0 起的 4.x 正式版。回归覆盖 3.2.20、4.0.0、4.2.6；其中 4.0.0 搭配 Vue 3.3.13 验证。                                          |
+| Antdv Next       | 普通固定表头表格。使用 Vue 入口，已验证 `antdv-next` 1.8.2 和 `@v-c/table` 1.3.8。                                                                |
 | Ant Design React | 普通固定表头表格。已验证 React / React DOM 19.3.1、Ant Design 6.7.1 和 `@rc-component/table` 1.12.0。虚拟表格和函数形式的自定义表体沿用上游行为。 |
 
-插件匹配组件库的 ESM 表格实现。遇到目标范围外的 AntDV 版本或未经验证的 React 底层表格版本时，会发出警告并继续尝试；核心滚动条补丁无法准确匹配时，构建会报错并指出对应文件。React 的分隔线修饰是可选的：如果表头代码无法唯一匹配，插件会静默跳过这项修饰；上游已移除分隔线时，样式也不会画出新的线。
+插件匹配组件库的 ESM 表格实现。遇到目标范围外的 AntDV 版本或未经验证的 Antdv Next 或 React 底层表格版本时，会发出警告并继续尝试；核心滚动条补丁无法准确匹配时，构建会报错并指出对应文件。如果表头代码无法唯一匹配，插件会跳过分隔线修饰。
 
 ## 解决什么问题
 
@@ -96,7 +97,7 @@ React 版最直接的记录来自 **antd 6.1.3**：五行数据放得下，改�
 
 另有用户以 `y: "max-content"` 复现右侧出现不可滚动的槽，也有人提出让滚动条只在内容超过阈值时出现的功能请求。[#25749](https://github.com/ant-design/ant-design/issues/25749) · [#25362](https://github.com/ant-design/ant-design/issues/25362)
 
-**React 还处理表头末尾多出的一条竖线。** 纵向滚动条出现时，最后一个数据列表头的右边会多出占位单元格。Ant Design 的列间分隔线因而也画在这两者之间。插件只隐藏这里的装饰线，保留正常列之间的分隔线和滚动条占宽。#56713 的主帖讨论空表切换数据时的列宽跳动；其中一条评论另外记录了这条多余的分隔线。[#56713 中关于分隔线的原始反馈](https://github.com/ant-design/ant-design/issues/56713#issuecomment-3815411230)
+**插件会在 Ant Design Vue、Antdv Next 和 React 中隐藏表头末尾多出的竖线。** 纵向滚动条出现时，最后一个数据列表头的右边会多出占位单元格。Ant Design 的列间分隔线因而也画在这两者之间。插件只隐藏这里的装饰线，保留正常列之间的分隔线和滚动条占宽。#56713 的主帖讨论空表切换数据时的列宽跳动；其中一条评论另外记录了这条多余的分隔线。[#56713 中关于分隔线的原始反馈](https://github.com/ant-design/ant-design/issues/56713#issuecomment-3815411230)
 
 ## 参与开发与提交 PR
 
@@ -107,12 +108,14 @@ pnpm install
 pnpm exec playwright install chromium
 pnpm exec vp run playground-vite8#dev        # Ant Design Vue
 # 或
+pnpm exec vp run playground-antdv-next-vite8#dev  # Antdv Next
+# 或
 pnpm exec vp run playground-react-vite8#dev  # Ant Design React
 ```
 
 示例左侧是原生表格，右侧启用插件。在默认高度下切换 **2 行 → 100 行 → 2 行**，可以观察滚动条占位是否出现并收回。展开一行、拖动高度或把自定义滚动条从 8 px 调到 48 px，可以验证表头在尺寸变化后是否仍然对齐。Windows 可选「系统默认」；使用浮层滚动条的环境可选「自定义」观察占宽效果。
 
-Vue 示例默认使用 AntDV 4，可通过环境变量 `ANTDV_MAJOR=3` 切到 3.2.20。`pnpm dev` 会同时打开 8 个开发服务。
+Vue 示例默认使用 AntDV 4，可通过环境变量 `ANTDV_MAJOR=3` 切到 3.2.20。`pnpm dev` 会同时打开 12 个开发服务。Antdv Next 本地有 Vite 7、Vite 8、Rsbuild 和 Vue CLI 四个案例，静态站收录 Vite 8、Rsbuild 和 Vue CLI。
 
 修改后在根目录运行：
 

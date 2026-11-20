@@ -1,11 +1,14 @@
 import { resolve, dirname } from 'node:path';
+import { dividerEdits } from './divider.ts';
 import { applyEdits, observeCall, packageVersion, tablePlugin } from './plugin.ts';
+import { transformNextTable } from './antdv-next.ts';
 
-const target = /[\\/]es[\\/]vc-table[\\/]Table\.js$/;
+const target = /[\\/](es[\\/]vc-table|@v-c[\\/]table[\\/]dist)[\\/]Table\.js$/;
 const warnedVersions = new Set<string>();
 
 export function transformTable(code: string, id: string) {
   if (!target.test(id)) return;
+  if (/[\\/]dist[\\/]Table\.js$/.test(id)) return transformNextTable(code, id);
   const version = packageVersion(resolve(dirname(id), '../../package.json'), 'ant-design-vue');
   if (!version) return;
   const supported = version === '3.2.20' || /^4\.\d+\.\d+(?:\+[\w.-]+)?$/.test(version);
@@ -17,7 +20,17 @@ export function transformTable(code: string, id: string) {
   }
 
   const originalMeasure = 'setScrollbarSize(getTargetScrollBarSize(scrollBodyRef.value).width);';
+  const headerClass = version.startsWith('3.')
+    ? '"class": "".concat(prefixCls, "-header")'
+    : '"class": `${prefixCls}-header`';
   const changes = [
+    ...dividerEdits(
+      code,
+      "import FixedHolder from './FixedHolder';",
+      headerClass,
+      headerClass +
+        ' + (fixHeader.value && typeof customizeScrollBody !== "function" ? " antd-better-scrollbar-header" : "")',
+    ),
     ["overflowY: 'scroll'", "overflowY: 'auto'"],
     [
       originalMeasure,
