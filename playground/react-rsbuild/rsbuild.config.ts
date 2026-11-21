@@ -2,7 +2,7 @@ import { sharedVendor } from '../site-resolver.ts';
 import { reactRoute, siteOutput } from '../site-assets.ts';
 import { reactTableAliases } from '../aliases.ts';
 import { defineConfig } from '@rsbuild/core';
-import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/react/rspack';
+import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/rspack/react';
 import { fileURLToPath } from 'node:url';
 import { reactTitle } from '../react/title.ts';
 

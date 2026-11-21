@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url';
 
-const headerStyle = import.meta.resolve('unplugin-antd-table-better-scrollbar/react/header.css');
+const headerStyle = import.meta.resolve('unplugin-antd-table-better-scrollbar/header.css');
 
 export function dividerEdits(
   code: string,

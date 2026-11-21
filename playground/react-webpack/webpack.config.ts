@@ -4,7 +4,7 @@ import { reactTableAliases } from '../aliases.ts';
 import type { Configuration } from 'webpack';
 import 'webpack-dev-server';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/react/webpack';
+import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/webpack/react';
 import { fileURLToPath } from 'node:url';
 import { reactTitle } from '../react/title.ts';
 

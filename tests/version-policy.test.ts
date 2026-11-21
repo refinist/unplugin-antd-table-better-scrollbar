@@ -108,7 +108,7 @@ test('React skips both divider edits when either anchor is missing or ambiguous'
     for (const changed of [missing, [missing, anchor, anchor].join('\n')]) {
       const result = transformReactTable(changed, id);
       assert.ok(result);
-      assert.doesNotMatch(result.code, /antd-better-scrollbar-header|styles[/\\]react\.css/);
+      assert.doesNotMatch(result.code, /antd-better-scrollbar-header|styles[/\\]header\.css/);
       assert.match(result.code, /new view\.ResizeObserver/);
       assert.ok(!result.code.includes("overflowY: hasData ? 'scroll' : 'auto'"));
       assert.throws(
@@ -136,7 +136,7 @@ test('React patches an unknown version and warns once per version', async ({ onT
     const result = transformReactTable(source, id);
     assert.ok(result);
     assert.match(result.code, /antd-better-scrollbar-header/);
-    assert.ok(result.code.includes(JSON.stringify(join(process.cwd(), 'styles/react.css'))));
+    assert.ok(result.code.includes(JSON.stringify(join(process.cwd(), 'styles/header.css'))));
     assert.match(result.code, /new view\.ResizeObserver/);
   }
   assert.equal(warn.mock.calls.length, 1);

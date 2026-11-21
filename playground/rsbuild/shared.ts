@@ -1,7 +1,7 @@
 import { sharedVendor } from '../site-resolver.ts';
 import { siteOutput } from '../site-assets.ts';
 import { defineConfig } from '@rsbuild/core';
-import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/rspack';
+import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/rspack/vue';
 import { vueDemo } from '../aliases.ts';
 import { fileURLToPath } from 'node:url';
 
