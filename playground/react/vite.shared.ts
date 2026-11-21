@@ -1,7 +1,7 @@
 import { sharedVendor } from '../site-resolver.ts';
 import { reactRoute, siteOutput } from '../site-assets.ts';
 import { reactTableAliases } from '../aliases.ts';
-import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/react/vite';
+import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/vite/react';
 import { reactTitle } from './title.ts';
 
 export function reactViteConfig(major: 7 | 8) {

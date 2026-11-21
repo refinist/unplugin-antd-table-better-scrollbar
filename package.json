@@ -14,16 +14,13 @@
   "type": "module",
   "exports": {
     ".": "./dist/index.js",
-    "./vite": "./dist/vite.js",
-    "./webpack": "./dist/webpack.js",
-    "./rspack": "./dist/rspack.js",
-    "./vue/vite": "./dist/vite.js",
-    "./react/header.css": "./styles/react.css",
-    "./react/vite": "./dist/react/vite.js",
-    "./vue/webpack": "./dist/webpack.js",
-    "./react/webpack": "./dist/react/webpack.js",
-    "./vue/rspack": "./dist/rspack.js",
-    "./react/rspack": "./dist/react/rspack.js"
+    "./vite/vue": "./dist/vite.js",
+    "./vite/react": "./dist/react/vite.js",
+    "./webpack/vue": "./dist/webpack.js",
+    "./webpack/react": "./dist/react/webpack.js",
+    "./rspack/vue": "./dist/rspack.js",
+    "./rspack/react": "./dist/react/rspack.js",
+    "./header.css": "./styles/header.css"
   },
   "scripts": {
     "prepare": "vp config --hooks --no-agent",

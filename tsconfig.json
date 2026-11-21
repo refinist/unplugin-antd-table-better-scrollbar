@@ -12,16 +12,13 @@
       "original-table": ["./node_modules/antdv4/es/table/index.d.ts"],
       "original-react-table": ["./node_modules/antd/es/table/index.d.ts"],
       "table-under-test": ["./node_modules/antdv4/es/table/index.d.ts"],
-      "unplugin-antd-table-better-scrollbar/vite": ["./src/vite.ts"],
-      "unplugin-antd-table-better-scrollbar/webpack": ["./src/webpack.ts"],
-      "unplugin-antd-table-better-scrollbar/rspack": ["./src/rspack.ts"],
-      "unplugin-antd-table-better-scrollbar": ["./src/index.ts"],
-      "unplugin-antd-table-better-scrollbar/vue/vite": ["./src/vite.ts"],
-      "unplugin-antd-table-better-scrollbar/react/vite": ["./src/react/vite.ts"],
-      "unplugin-antd-table-better-scrollbar/vue/webpack": ["./src/webpack.ts"],
-      "unplugin-antd-table-better-scrollbar/react/webpack": ["./src/react/webpack.ts"],
-      "unplugin-antd-table-better-scrollbar/vue/rspack": ["./src/rspack.ts"],
-      "unplugin-antd-table-better-scrollbar/react/rspack": ["./src/react/rspack.ts"]
+      "unplugin-antd-table-better-scrollbar/vite/vue": ["./src/vite.ts"],
+      "unplugin-antd-table-better-scrollbar/vite/react": ["./src/react/vite.ts"],
+      "unplugin-antd-table-better-scrollbar/webpack/vue": ["./src/webpack.ts"],
+      "unplugin-antd-table-better-scrollbar/webpack/react": ["./src/react/webpack.ts"],
+      "unplugin-antd-table-better-scrollbar/rspack/vue": ["./src/rspack.ts"],
+      "unplugin-antd-table-better-scrollbar/rspack/react": ["./src/react/rspack.ts"],
+      "unplugin-antd-table-better-scrollbar": ["./src/index.ts"]
     },
     "allowImportingTsExtensions": true,
     "jsx": "react-jsx"

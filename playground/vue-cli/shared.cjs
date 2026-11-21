@@ -1,6 +1,6 @@
 const { sharedVendor } = require('../site-resolver.ts');
 // Vue CLI 5 loads its configuration through CommonJS.
-const { AntdTableBetterScrollbar } = require('unplugin-antd-table-better-scrollbar/webpack');
+const { AntdTableBetterScrollbar } = require('unplugin-antd-table-better-scrollbar/webpack/vue');
 const { siteOutput } = require('../site-assets.ts');
 const { vueDemo } = require('../aliases.ts');
 module.exports = function vueCliConfig(library) {

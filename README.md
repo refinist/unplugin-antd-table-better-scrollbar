@@ -20,17 +20,17 @@ pnpm add -D unplugin-antd-table-better-scrollbar
 ```ts
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/vite';
+import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/vite/vue';
 
 export default defineConfig({ plugins: [vue(), AntdTableBetterScrollbar()] });
 ```
 
-**React with Vite** — Use the `/react/vite` entry point.
+**React with Vite** — Use the `/vite/react` entry point.
 
 ```ts
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/react/vite';
+import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/vite/react';
 
 export default defineConfig({ plugins: [react(), AntdTableBetterScrollbar()] });
 ```
@@ -39,11 +39,13 @@ Other build tools use the same `AntdTableBetterScrollbar()` call. Append the app
 
 | Build tool            | Vue entry point | React entry point | Where to register the plugin                                |
 | --------------------- | --------------- | ----------------- | ----------------------------------------------------------- |
-| Vite 7 / 8            | `/vite`         | `/react/vite`     | `plugins`                                                   |
-| Rspack / Rsbuild      | `/rspack`       | `/react/rspack`   | Rspack’s `plugins` or Rsbuild’s `tools.rspack.plugins`      |
-| Webpack 5 / Vue CLI 5 | `/webpack`      | `/react/webpack`  | Webpack’s `plugins` or Vue CLI’s `configureWebpack.plugins` |
+| Vite 7 / 8            | `/vite/vue`     | `/vite/react`     | `plugins`                                                   |
+| Rspack / Rsbuild      | `/rspack/vue`   | `/rspack/react`   | Rspack’s `plugins` or Rsbuild’s `tools.rspack.plugins`      |
+| Webpack 5 / Vue CLI 5 | `/webpack/vue`  | `/webpack/react`  | Webpack’s `plugins` or Vue CLI’s `configureWebpack.plugins` |
 
-Vue also supports the explicit entry points `/vue/vite`, `/vue/rspack`, and `/vue/webpack`. The plugin imports the header divider CSS automatically, so Webpack projects need a CSS loader configured. Once the plugin is registered, set `scroll.y` as usual. No extra table props or wrapper components are required.
+When upgrading from 0.0.x, change Vue imports such as `/webpack` or `/vue/webpack` to `/webpack/vue`, and React imports such as `/react/webpack` to `/webpack/react`. Use the same order for Vite and Rspack.
+
+Vue and React entries automatically import the shared `/header.css` stylesheet, so Webpack projects need a CSS loader configured. Once the plugin is registered, set `scroll.y` as usual. No extra table props or wrapper components are required.
 
 | Component library  | Supported scope and tested versions                                                                                                                                                                             |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

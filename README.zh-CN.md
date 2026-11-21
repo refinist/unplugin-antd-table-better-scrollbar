@@ -20,30 +20,32 @@ pnpm add -D unplugin-antd-table-better-scrollbar
 ```ts
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/vite';
+import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/vite/vue';
 
 export default defineConfig({ plugins: [vue(), AntdTableBetterScrollbar()] });
 ```
 
-**React + Vite** 使用 `/react/vite` 入口：
+**React + Vite** 使用 `/vite/react` 入口：
 
 ```ts
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/react/vite';
+import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/vite/react';
 
 export default defineConfig({ plugins: [react(), AntdTableBetterScrollbar()] });
 ```
 
 其他构建工具使用相同的 `AntdTableBetterScrollbar()`。下表是接在包名之后的入口路径。
 
-| 构建工具              | Vue 入口   | React 入口       | 注册位置                                                      |
-| --------------------- | ---------- | ---------------- | ------------------------------------------------------------- |
-| Vite 7 / 8            | `/vite`    | `/react/vite`    | `plugins`                                                     |
-| Rspack / Rsbuild      | `/rspack`  | `/react/rspack`  | Rspack 的 `plugins` 或 Rsbuild 的 `tools.rspack.plugins`      |
-| Webpack 5 / Vue CLI 5 | `/webpack` | `/react/webpack` | Webpack 的 `plugins` 或 Vue CLI 的 `configureWebpack.plugins` |
+| 构建工具              | Vue 入口       | React 入口       | 注册位置                                                      |
+| --------------------- | -------------- | ---------------- | ------------------------------------------------------------- |
+| Vite 7 / 8            | `/vite/vue`    | `/vite/react`    | `plugins`                                                     |
+| Rspack / Rsbuild      | `/rspack/vue`  | `/rspack/react`  | Rspack 的 `plugins` 或 Rsbuild 的 `tools.rspack.plugins`      |
+| Webpack 5 / Vue CLI 5 | `/webpack/vue` | `/webpack/react` | Webpack 的 `plugins` 或 Vue CLI 的 `configureWebpack.plugins` |
 
-Vue 也支持显式的 `/vue/vite`、`/vue/rspack`、`/vue/webpack`。插件会自动引入分隔线样式，Webpack 项目需要能加载 CSS。接入后照常设置 `scroll.y`，无需添加表格属性或包装组件。
+从 0.0.x 升级时，Vue 项目请将 `/webpack` 或 `/vue/webpack` 改为 `/webpack/vue`，React 项目请将 `/react/webpack` 改为 `/webpack/react`。Vite 和 Rspack 的入口也按相同顺序调整。
+
+Vue 和 React 入口都会自动引入共享的表头分隔线样式 `/header.css`，Webpack 项目需要能加载 CSS。接入后照常设置 `scroll.y`，无需添加表格属性或包装组件。
 
 | 组件库           | 适用范围与验证版本                                                                                                                                |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |

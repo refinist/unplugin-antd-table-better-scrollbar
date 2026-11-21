@@ -1,6 +1,6 @@
 import { sharedVendor } from './site-resolver.ts';
 import { siteOutput } from './site-assets.ts';
-import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/vite';
+import { AntdTableBetterScrollbar } from 'unplugin-antd-table-better-scrollbar/vite/vue';
 import { vueDemo } from './aliases.ts';
 
 export function vueViteConfig(vite: 7 | 8, library?: 'next') {
