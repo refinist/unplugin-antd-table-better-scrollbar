@@ -1,6 +1,6 @@
 {
   "name": "unplugin-antd-table-better-scrollbar",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Build plugin for Ant Design Vue and React table scrollbar alignment",
   "license": "MIT",
   "repository": {
